@@ -74,21 +74,18 @@ export function CursorTrail() {
   }, []);
 
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      spawnBurst(e.clientX, e.clientY);
+    const handlePointerDown = (e: PointerEvent) => {
+      // Only spawn hearts for actual mouse clicks, 
+      // preventing severe lag from touch events on mobile
+      if (e.pointerType === "mouse") {
+        spawnBurst(e.clientX, e.clientY);
+      }
     };
 
-    const handleTouch = (e: TouchEvent) => {
-      const touch = e.changedTouches[0];
-      if (touch) spawnBurst(touch.clientX, touch.clientY);
-    };
-
-    window.addEventListener("click", handleClick, { passive: true });
-    window.addEventListener("touchend", handleTouch, { passive: true });
+    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
 
     return () => {
-      window.removeEventListener("click", handleClick);
-      window.removeEventListener("touchend", handleTouch);
+      window.removeEventListener("pointerdown", handlePointerDown);
     };
   }, [spawnBurst]);
 
