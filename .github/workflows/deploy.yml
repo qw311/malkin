@@ -40,6 +40,9 @@ jobs:
       - name: Build static site
         run: npm run build:gh-pages
         
+      - name: Create 404 fallback for SPA
+        run: cp dist/index.html dist/404.html
+        
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
